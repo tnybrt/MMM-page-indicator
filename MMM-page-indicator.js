@@ -28,12 +28,13 @@ Module.register('MMM-page-indicator', {
   },
 
   /**
-   * Render the cicles for each page, and highlighting the page we're on.
+   * Render the circles for each page, and highlighting the page we're on.
    */
   getDom() {
     const wrapper = document.createElement('div');
 
     for (let i = 0; i < this.config.pages; i += 1) {
+      Log.debug(`[${this.name}]: Adding circle for page ${i} of ${this.config.pages - 1}`);
       const circleWrapper = document.createElement('div');
       circleWrapper.classList.add('circle-wrapper');
 
@@ -41,7 +42,7 @@ Module.register('MMM-page-indicator', {
       circle.classList.add('fa', 'indicator', `page-${i}`);
 
       if (this.curPage === i) {
-        circle.classList.add('fa-circle', 'bright', 'active-page');
+        circle.classList.add('fa-circle', 'active-page');
         if (this.config.activeBright) circle.classList.add('bright');
       }
       else {
@@ -81,7 +82,7 @@ Module.register('MMM-page-indicator', {
   },
 
   /**
-   * If we recieve a notification that we can respond to, update which page
+   * If we receive a notification that we can respond to, update which page
    * we're suppose to show as active.
    * @param {string} notification The notification ID
    * @param {number} payload the payload type.
