@@ -1,8 +1,12 @@
 # MMM-page-indicator
 
-![Screenshot](examples/screenshot.png)
+**MMM-page-indicator** is a [MagicMirror²][mm] module that indicates which page is currently visible. It serves as an indicator and provides an easy way to switch pages by clicking on the circle representing the page you want to navigate to.
 
-This [MagicMirror²][mm] Module is designed to indicate what "page" you are looking at. This module is designed to be an indicator only. By itself, it only offers a basic way to change the page, by clicking on the circle indicative of the page you wish to change to.
+This module works well with [MMM-pages], but it is compatible with any module that sends the `PAGE_CHANGED` notification.
+
+## Screenshot
+
+![Screenshot](examples/screenshot.png)
 
 ## Project Status
 
@@ -39,20 +43,22 @@ To use this module, add it to the modules array in the `config/config.js` file:
         module: 'MMM-page-indicator',
         position: 'bottom_bar',
         config: {
-            pages: 3,
+            activeBright: true,
         }
     },
 ```
 
 ### Configuration options
 
-Option|Description
-------|-----------
-`pages`|Number of pages that you have.<br/>**Expected Value type:** `int`.
-`activeBright`|Should the active circle be bright.<br/>**Expected Value type:** `boolean`.
-`inactiveDimmed`|Should the inactive circles be dimmed?<br/>**Expected Value type:** `boolean`.
-`inactiveHollow`|Should the inactive circles be hollow?<br/>**Expected Value type:** `boolean`.
-`showPageNumberOnHover`|Should the page number be shown on hover?<br/>**Expected Value type:** `boolean`.
+All configuration options are optional.
+
+| Option                  | Description                                                                                           |
+| ----------------------- | ----------------------------------------------------------------------------------------------------- |
+| `pages`                 | Number of pages that you have.<br/>**Value type:** `int`<br/>**Default value:** `3`                   |
+| `activeBright`          | Should the active circle be bright.<br/>**Value type:** `boolean`<br/>**Default value:** `false`      |
+| `inactiveDimmed`        | Should the inactive circles be dimmed?<br/>**Value type:** `boolean`<br/>**Default value:** `true`    |
+| `inactiveHollow`        | Should the inactive circles be hollow?<br/>**Value type:** `boolean`<br/>**Default value:** `true`    |
+| `showPageNumberOnHover` | Should the page number be shown on hover?<br/>**Value type:** `boolean`<br/>**Default value:** `true` |
 
 ## Styling
 
@@ -62,7 +68,7 @@ Without styling, the indicators will look like this:
 
 ![screencast 1](examples/screencast_1_without-styling.gif)
 
-Below are some styling examples. Just add them to your `custom.css` file to test them on your system. With CSS you can do a lot of things, so feel free to experiment with the styles.
+Below are some styling examples. Just add them to your `custom.css` file (usually located in `~/MagicMirror/css/`) to test them on your system. With CSS you can do a lot of things, so feel free to experiment with the styles.
 
 ### Example: Changing the icon of a page indicator
 
@@ -75,8 +81,8 @@ You can assign a different icon per page indicator. This example sets the page 2
 
 ```css
 .MMM-page-indicator .page-2::before {
-    color: orange;
-    content:"⭐";
+  color: orange;
+  content: "⭐";
 }
 ```
 
@@ -93,17 +99,24 @@ This example extends the one above and adds a pulsing effect to the active page 
 
 ```css
 .MMM-page-indicator .page-2::before {
-    color: orange;
-    content:"⭐";
+  color: orange;
+  content: "⭐";
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.6; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
 }
 
 .MMM-page-indicator .active-page {
-    animation: pulse 1.2s ease-in-out infinite;
+  animation: pulse 1.2s ease-in-out infinite;
 }
 ```
 
@@ -130,30 +143,37 @@ This is an advanced example which adds a description text to the page indicators
 }
 
 .MMM-page-indicator .page-0::before {
-    content:"🏠 \A Home";
+  content: "🏠 \A Home";
 }
 
 .MMM-page-indicator .page-1::before {
-    content:"📅 \A Calendar";
+  content: "📅 \A Calendar";
 }
 
 .MMM-page-indicator .page-2::before {
-    content:"⭐ \A News";
+  content: "⭐ \A News";
 }
 
 .MMM-page-indicator .page-3::before {
-    content:"⛅ \A Weather";
+  content: "⛅ \A Weather";
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.6; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
 }
 
 .MMM-page-indicator .active-page {
-    color: orange;
-    font-variant-emoji: text;
-    animation: pulse 5s ease-in-out infinite;
+  color: orange;
+  font-variant-emoji: text;
+  animation: pulse 5s ease-in-out infinite;
 }
 ```
 
@@ -179,18 +199,18 @@ this.sendNotification("MAX_PAGES_CHANGED", 4);
 
 This would now show that there are now 4 pages to display.
 
-You can also just send `PAGE_INCREMENT` or `PAGE_DECREMENT` without any payloads to have the module change the displayed page by one. If you are using [MMM-pages](https://github.com/edward-shen/MMM-pages) with this module, sending an integer as a payload for a `PAGE_INCREMENT` or `PAGE_DECREMENT` notification will perform as described in [the MMM-pages documentation](https://github.com/edward-shen/MMM-pages#notifications). If you are not using MMM-pages, the indicator will ignore the payload and just change the displayed page by one.
+You can also just send `PAGE_INCREMENT` or `PAGE_DECREMENT` without any payloads to have the module change the displayed page by one. If you are using [MMM-pages] with this module, sending an integer as a payload for a `PAGE_INCREMENT` or `PAGE_DECREMENT` notification will perform as described in [the MMM-pages documentation](https://github.com/edward-shen/MMM-pages#notifications). If you are not using MMM-pages, the indicator will ignore the payload and just change the displayed page by one.
 
 ## FAQ
 
 - Help! My module is (above/below) another module in the same region but I want it to be somewhere else!
 
   The order of your `config.js` determines your module location. If you have two modules, both with `position:bottom_bar`, the one that is first listed will appear on top. The rest will appear in the same order you defined them in. If you want this module to be at the very bottom, define this module as the last module in your `config.js` file. If you want it to be on top in that region, make sure no other module is defined before it that has the same region.
-  
+
 - Can I make a pull request?
 
   Please do! I'd love for this to be integrated in many modules!
-  
+
 - I want more config options!
 
   Please make an issue. Thanks!
@@ -210,3 +230,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 All notable changes to this project will be documented in the [CHANGELOG](CHANGELOG.md) file.
 
 [mm]: https://github.com/MagicMirrorOrg/MagicMirror
+[MMM-pages]: https://github.com/edward-shen/MMM-pages
